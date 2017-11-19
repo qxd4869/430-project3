@@ -3,11 +3,13 @@ const handleUnit = (e, csrf) => {
   
   $('#unitMessage').animate({ width: 'hide' }, 350);
   
-  if ($('#unitName').val() === '' || $('#unitAge').val() === '' || $('#unitStrength').val() === '') {
+  if ($('#unitName').val() === '') {
     handleError('RAWR! All fields are required!');
     return false;
   }
-  
+
+  //console.dir($('#unitForm').serialize());
+  //console.dir($('#unitType').val());
   sendAjax('POST', $('#unitForm').attr('action'), $('#unitForm').serialize(), () => {
     loadUnitsFromServer(csrf);
   });
@@ -36,10 +38,11 @@ const UnitForm = (props) => {
           className="unitForm">
       <label htmlFor="name">Name: </label>
       <input id="unitName" type="text" name="name" placeholder="Unit Name" />
-      <label htmlFor="age">Age: </label>
-      <input id="unitAge" type="text" name="age" placeholder="Unit Age" />
-      <label htmlFor="strength">Strength: </label>
-      <input id="unitStrength" type="text" name="strength" placeholder="Unit Strength" />
+      <select id="unitType" name="type">
+        <option value="Vulture">Vulture</option>
+        <option value="Siege Tank">Siege Tank</option>
+        <option value="Goliah">Goliah</option>
+      </select>
       <input type="hidden" name="_csrf" value={props.csrf} />
       <input className="makeUnitSubmit" type="submit" value="Make Unit" />
     </form>
@@ -58,13 +61,14 @@ const UnitList = (props) => {
   const unitNodes = props.units.map((unit) => {
     return (
       <div key={unit._id} className="unit">
-        <img src="/assets/img/domoface.jpeg" alt="domo face" className="unitFace" />
-        <h3 className="unitName"> Name: {unit.name} </h3>
-        <h3 className="unitAge"> Age: {unit.age} </h3>
-        <h3 className="unitStrength"> Strength: {unit.strength} </h3>
-        <button onClick={(e) => { deleteUnit(e, unit._id, props.csrf ); }}>
-              DELETE
-        </button>
+        <img src="/assets/img/vulture.png" alt="domo face" className="unitFace" />
+        <h3 className="unitName"> {unit.name} </h3>
+        <h3 className="unitType"> {unit.type} </h3>
+        <div>
+          <button className="unitDelete" onClick={(e) => { deleteUnit(e, unit._id, props.csrf ); }}>
+                  DISBAND
+          </button>
+        </div>
       </div>
     );
   });

@@ -68,6 +68,15 @@ nav:nth-child(1) {
     color: white;
 }
 
+.unitForm select {
+    display: inline-block;
+    width: 125px;
+    margin-left: 100px;
+    font-size: 1.0em;
+    float: left;
+    text-align: right;
+}
+
 .unitForm input[type=text] {
     float:left;
 }
@@ -239,19 +248,29 @@ h3.emptyunit {
 
 h3.unitName {
     float:left;
-    width: 200px;
+    width: 100px;
     font-weight: bold;
     padding-left: 65px;
     font-size: 1.5em;
 }
 
-h3.unitAge {
-    float:right;
+h3.unitType {
+    float:left;
     text-align: left;
-    width: 100px;
+    width: 0px;
     font-weight: bold;
-    padding-right: 40px;
+    padding-right: 0px;
     font-size: 1.5em;
+}
+
+.unitDelete{
+    display: block;
+    float: right;
+    text-align: left;
+    width: 150px;
+    font-weight: bold;
+    padding-right: 0px;
+    font-size: 1.0em;
 }
 
 

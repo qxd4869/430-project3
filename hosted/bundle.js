@@ -5,11 +5,13 @@ var handleUnit = function handleUnit(e, csrf) {
 
   $('#unitMessage').animate({ width: 'hide' }, 350);
 
-  if ($('#unitName').val() === '' || $('#unitAge').val() === '' || $('#unitStrength').val() === '') {
+  if ($('#unitName').val() === '') {
     handleError('RAWR! All fields are required!');
     return false;
   }
 
+  //console.dir($('#unitForm').serialize());
+  //console.dir($('#unitType').val());
   sendAjax('POST', $('#unitForm').attr('action'), $('#unitForm').serialize(), function () {
     loadUnitsFromServer(csrf);
   });
@@ -45,17 +47,24 @@ var UnitForm = function UnitForm(props) {
     ),
     React.createElement('input', { id: 'unitName', type: 'text', name: 'name', placeholder: 'Unit Name' }),
     React.createElement(
-      'label',
-      { htmlFor: 'age' },
-      'Age: '
+      'select',
+      { id: 'unitType', name: 'type' },
+      React.createElement(
+        'option',
+        { value: 'Vulture' },
+        'Vulture'
+      ),
+      React.createElement(
+        'option',
+        { value: 'Siege Tank' },
+        'Siege Tank'
+      ),
+      React.createElement(
+        'option',
+        { value: 'Goliah' },
+        'Goliah'
+      )
     ),
-    React.createElement('input', { id: 'unitAge', type: 'text', name: 'age', placeholder: 'Unit Age' }),
-    React.createElement(
-      'label',
-      { htmlFor: 'strength' },
-      'Strength: '
-    ),
-    React.createElement('input', { id: 'unitStrength', type: 'text', name: 'strength', placeholder: 'Unit Strength' }),
     React.createElement('input', { type: 'hidden', name: '_csrf', value: props.csrf }),
     React.createElement('input', { className: 'makeUnitSubmit', type: 'submit', value: 'Make Unit' })
   );
@@ -78,34 +87,31 @@ var UnitList = function UnitList(props) {
     return React.createElement(
       'div',
       { key: unit._id, className: 'unit' },
-      React.createElement('img', { src: '/assets/img/domoface.jpeg', alt: 'domo face', className: 'unitFace' }),
+      React.createElement('img', { src: '/assets/img/vulture.png', alt: 'domo face', className: 'unitFace' }),
       React.createElement(
         'h3',
         { className: 'unitName' },
-        ' Name: ',
+        ' ',
         unit.name,
         ' '
       ),
       React.createElement(
         'h3',
-        { className: 'unitAge' },
-        ' Age: ',
-        unit.age,
+        { className: 'unitType' },
+        ' ',
+        unit.type,
         ' '
       ),
       React.createElement(
-        'h3',
-        { className: 'unitStrength' },
-        ' Strength: ',
-        unit.strength,
-        ' '
-      ),
-      React.createElement(
-        'button',
-        { onClick: function onClick(e) {
-            deleteUnit(e, unit._id, props.csrf);
-          } },
-        'DELETE'
+        'div',
+        null,
+        React.createElement(
+          'button',
+          { className: 'unitDelete', onClick: function onClick(e) {
+              deleteUnit(e, unit._id, props.csrf);
+            } },
+          'DISBAND'
+        )
       )
     );
   });

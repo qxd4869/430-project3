@@ -17,20 +17,16 @@ const UnitSchema = new mongoose.Schema({
     trim: true,
     set: setName,
   },
-  age: {
-    type: Number,
-    min: 0,
+  type: {
+    type: String,
     required: true,
+    trim: true,
+    set: setName,
   },
   owner: {
     type: mongoose.Schema.ObjectId,
     required: true,
     ref: 'Account',
-  },
-  strength: {
-    type: Number,
-    min: 0,
-    required: true,
   },
   createdDate: {
     type: Date,
@@ -48,7 +44,7 @@ UnitSchema.statics.findByOwner = (ownerId, callback) => {
     owner: convertId(ownerId),
   };
 
-  return UnitModel.find(search).select('name age strength').exec(callback);
+  return UnitModel.find(search).select('name type').exec(callback);
 };
 
 UnitModel = mongoose.model('Unit', UnitSchema);
