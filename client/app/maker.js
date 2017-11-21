@@ -17,16 +17,6 @@ const handleUnit = (e, csrf) => {
   return false;
 };
 
-const deleteUnit = (e, id, csrf) => {
-  e.preventDefault();
- 
-  
-  $('unitMessage').animate({ width: 'hide' }, 350);
-
-  sendAjax('POST', '/deleteUnit', `id=${id}&_csrf=${csrf}`, () =>{
-    loadUnitsFromServer(csrf);
-  });
-};
 
 const UnitForm = (props) => {
   return (
@@ -36,15 +26,11 @@ const UnitForm = (props) => {
           action="/maker"
           method="POST"
           className="unitForm">
+      <img src="/assets/img/vulture.png" alt="domo face" className="produceIcon" />
       <label htmlFor="name">Name: </label>
       <input id="unitName" type="text" name="name" placeholder="Unit Name" />
-      <select id="unitType" name="type">
-        <option value="Vulture">Vulture</option>
-        <option value="Siege Tank">Siege Tank</option>
-        <option value="Goliah">Goliah</option>
-      </select>
-      <input type="hidden" name="_csrf" value={props.csrf} />
       <input className="makeUnitSubmit" type="submit" value="Make Unit" />
+      <input type="hidden" name="_csrf" value={props.csrf} />
     </form>
   );
 };
@@ -60,16 +46,9 @@ const UnitList = (props) => {
   
   const unitNodes = props.units.map((unit) => {
     return (
-      <div key={unit._id} className="unit">
+      <span key={unit._id} className="unit">
         <img src="/assets/img/vulture.png" alt="domo face" className="unitFace" />
-        <h3 className="unitName"> {unit.name} </h3>
-        <h3 className="unitType"> {unit.type} </h3>
-        <div>
-          <button className="unitDelete" onClick={(e) => { deleteUnit(e, unit._id, props.csrf ); }}>
-                  DISBAND
-          </button>
-        </div>
-      </div>
+      </span>
     );
   });
   

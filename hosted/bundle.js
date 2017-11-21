@@ -19,16 +19,6 @@ var handleUnit = function handleUnit(e, csrf) {
   return false;
 };
 
-var deleteUnit = function deleteUnit(e, id, csrf) {
-  e.preventDefault();
-
-  $('unitMessage').animate({ width: 'hide' }, 350);
-
-  sendAjax('POST', '/deleteUnit', 'id=' + id + '&_csrf=' + csrf, function () {
-    loadUnitsFromServer(csrf);
-  });
-};
-
 var UnitForm = function UnitForm(props) {
   return React.createElement(
     'form',
@@ -40,33 +30,15 @@ var UnitForm = function UnitForm(props) {
       action: '/maker',
       method: 'POST',
       className: 'unitForm' },
+    React.createElement('img', { src: '/assets/img/vulture.png', alt: 'domo face', className: 'produceIcon' }),
     React.createElement(
       'label',
       { htmlFor: 'name' },
       'Name: '
     ),
     React.createElement('input', { id: 'unitName', type: 'text', name: 'name', placeholder: 'Unit Name' }),
-    React.createElement(
-      'select',
-      { id: 'unitType', name: 'type' },
-      React.createElement(
-        'option',
-        { value: 'Vulture' },
-        'Vulture'
-      ),
-      React.createElement(
-        'option',
-        { value: 'Siege Tank' },
-        'Siege Tank'
-      ),
-      React.createElement(
-        'option',
-        { value: 'Goliah' },
-        'Goliah'
-      )
-    ),
-    React.createElement('input', { type: 'hidden', name: '_csrf', value: props.csrf }),
-    React.createElement('input', { className: 'makeUnitSubmit', type: 'submit', value: 'Make Unit' })
+    React.createElement('input', { className: 'makeUnitSubmit', type: 'submit', value: 'Make Unit' }),
+    React.createElement('input', { type: 'hidden', name: '_csrf', value: props.csrf })
   );
 };
 
@@ -85,34 +57,9 @@ var UnitList = function UnitList(props) {
 
   var unitNodes = props.units.map(function (unit) {
     return React.createElement(
-      'div',
+      'span',
       { key: unit._id, className: 'unit' },
-      React.createElement('img', { src: '/assets/img/vulture.png', alt: 'domo face', className: 'unitFace' }),
-      React.createElement(
-        'h3',
-        { className: 'unitName' },
-        ' ',
-        unit.name,
-        ' '
-      ),
-      React.createElement(
-        'h3',
-        { className: 'unitType' },
-        ' ',
-        unit.type,
-        ' '
-      ),
-      React.createElement(
-        'div',
-        null,
-        React.createElement(
-          'button',
-          { className: 'unitDelete', onClick: function onClick(e) {
-              deleteUnit(e, unit._id, props.csrf);
-            } },
-          'DISBAND'
-        )
-      )
+      React.createElement('img', { src: '/assets/img/vulture.png', alt: 'domo face', className: 'unitFace' })
     );
   });
 
