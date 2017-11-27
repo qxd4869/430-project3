@@ -14,12 +14,11 @@ const makerPage = (req, res) => {
 };
 
 const makeUnit = (req, res) => {
-  if (!req.body.name) {
-    return res.status(400).json({ error: 'RAWR! Both name and age are required!' });
-  }
+//  if (!req.body.name) {
+//    return res.status(400).json({ error: 'RAWR! Both name and age are required!' });
+//  }
 
   const unitData = {
-    name: req.body.name,
     type: req.body.type,
     owner: req.session.account._id,
   };

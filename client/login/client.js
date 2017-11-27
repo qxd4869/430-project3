@@ -1,5 +1,5 @@
 const handleLogin = (e) => {
-  e.preventDefault;
+  e.preventDefault();
   
   $('#unitMessage').animate({ width: 'hide' }, 350);
   
@@ -16,7 +16,7 @@ const handleLogin = (e) => {
 };
 
 const handleSignup = (e) => {
-  e.preventDefault;
+  e.preventDefault();
   
   $('#unitMessage').animate({ width: 'hide' }, 350);
   

@@ -1,7 +1,7 @@
 'use strict';
 
 var handleLogin = function handleLogin(e) {
-  e.preventDefault;
+  e.preventDefault();
 
   $('#unitMessage').animate({ width: 'hide' }, 350);
 
@@ -18,7 +18,7 @@ var handleLogin = function handleLogin(e) {
 };
 
 var handleSignup = function handleSignup(e) {
-  e.preventDefault;
+  e.preventDefault();
 
   $('#unitMessage').animate({ width: 'hide' }, 350);
 

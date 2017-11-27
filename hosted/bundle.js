@@ -1,18 +1,29 @@
 'use strict';
 
-var handleUnit = function handleUnit(e, csrf) {
+var handleUnit = function handleUnit(e, csrf, clicked_name) {
   e.preventDefault();
 
   $('#unitMessage').animate({ width: 'hide' }, 350);
 
-  if ($('#unitName').val() === '') {
-    handleError('RAWR! All fields are required!');
-    return false;
-  }
+  var data = {
+    type: clicked_name,
+    _csrf: csrf
+  };
 
-  //console.dir($('#unitForm').serialize());
-  //console.dir($('#unitType').val());
-  sendAjax('POST', $('#unitForm').attr('action'), $('#unitForm').serialize(), function () {
+  //Data to send
+  var sendData = $.param(data);
+  var audioFile = "#" + clicked_name + "_ready";
+  //Play units ready sound
+  $(audioFile)[0].play();
+
+  $(function () {
+    $("audio").on("play", function () {
+      $("audio").not(this).each(function (index, audio) {
+        audio.pause();
+      });
+    });
+  });
+  sendAjax('POST', $('#unitForm').attr('action'), sendData, function () {
     loadUnitsFromServer(csrf);
   });
 
@@ -30,14 +41,18 @@ var UnitForm = function UnitForm(props) {
       action: '/maker',
       method: 'POST',
       className: 'unitForm' },
-    React.createElement('img', { src: '/assets/img/vulture.png', alt: 'domo face', className: 'produceIcon' }),
-    React.createElement(
-      'label',
-      { htmlFor: 'name' },
-      'Name: '
-    ),
-    React.createElement('input', { id: 'unitName', type: 'text', name: 'name', placeholder: 'Unit Name' }),
-    React.createElement('input', { className: 'makeUnitSubmit', type: 'submit', value: 'Make Unit' }),
+    React.createElement('img', { src: '/assets/img/vulture.png', onClick: function onClick(e) {
+        handleUnit(e, props.csrf, "vulture");
+      }, alt: 'vulture', className: 'produceIcon' }),
+    React.createElement('img', { src: '/assets/img/siegetank.png', onClick: function onClick(e) {
+        handleUnit(e, props.csrf, "siegetank");
+      }, alt: 'siege tank', className: 'produceIcon' }),
+    React.createElement('img', { src: '/assets/img/goliah.png', onClick: function onClick(e) {
+        handleUnit(e, props.csrf, "goliah");
+      }, alt: 'goliah', className: 'produceIcon' }),
+    React.createElement('img', { src: '/assets/img/goliah.png', onClick: function onClick(e) {
+        handleUnit(e, props.csrf, "goliah");
+      }, alt: 'goliah', className: 'produceIcon2' }),
     React.createElement('input', { type: 'hidden', name: '_csrf', value: props.csrf })
   );
 };
@@ -59,7 +74,7 @@ var UnitList = function UnitList(props) {
     return React.createElement(
       'span',
       { key: unit._id, className: 'unit' },
-      React.createElement('img', { src: '/assets/img/vulture.png', alt: 'domo face', className: 'unitFace' })
+      React.createElement('img', { src: "/assets/img/" + unit.type + ".png", alt: 'domo face', className: 'unitFace' })
     );
   });
 

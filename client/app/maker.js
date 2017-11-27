@@ -1,16 +1,27 @@
-const handleUnit = (e, csrf) => {
+const handleUnit = (e, csrf, clicked_name) => {
   e.preventDefault();
   
   $('#unitMessage').animate({ width: 'hide' }, 350);
   
-  if ($('#unitName').val() === '') {
-    handleError('RAWR! All fields are required!');
-    return false;
-  }
-
-  //console.dir($('#unitForm').serialize());
-  //console.dir($('#unitType').val());
-  sendAjax('POST', $('#unitForm').attr('action'), $('#unitForm').serialize(), () => {
+  const data = {
+    type: clicked_name,
+    _csrf: csrf,
+  };
+  
+  //Data to send
+  const sendData = $.param(data);
+  let audioFile = "#" + clicked_name + "_ready";
+  //Play units ready sound
+  $(audioFile)[0].play();
+  
+  $(function(){
+      $("audio").on("play", function() {
+          $("audio").not(this).each(function(index, audio) {
+              audio.pause();
+          });
+      });
+  });
+  sendAjax('POST', $('#unitForm').attr('action'), sendData, () => {
     loadUnitsFromServer(csrf);
   });
   
@@ -26,10 +37,10 @@ const UnitForm = (props) => {
           action="/maker"
           method="POST"
           className="unitForm">
-      <img src="/assets/img/vulture.png" alt="domo face" className="produceIcon" />
-      <label htmlFor="name">Name: </label>
-      <input id="unitName" type="text" name="name" placeholder="Unit Name" />
-      <input className="makeUnitSubmit" type="submit" value="Make Unit" />
+      <img src="/assets/img/vulture.png" onClick={(e) => { handleUnit(e, props.csrf, "vulture" );}} alt="vulture" className="produceIcon" />
+      <img src="/assets/img/siegetank.png" onClick={(e) => { handleUnit(e, props.csrf, "siegetank" );}} alt="siege tank" className="produceIcon" />
+      <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
+      <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon2" />
       <input type="hidden" name="_csrf" value={props.csrf} />
     </form>
   );
@@ -47,7 +58,7 @@ const UnitList = (props) => {
   const unitNodes = props.units.map((unit) => {
     return (
       <span key={unit._id} className="unit">
-        <img src="/assets/img/vulture.png" alt="domo face" className="unitFace" />
+        <img src={"/assets/img/"+ unit.type +".png"} alt="domo face" className="unitFace" />
       </span>
     );
   });

@@ -11,12 +11,6 @@ const convertId = mongoose.Types.ObjectId;
 const setName = (name) => _.escape(name).trim();
 
 const UnitSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-    set: setName,
-  },
   type: {
     type: String,
     required: true,
@@ -35,8 +29,7 @@ const UnitSchema = new mongoose.Schema({
 });
 
 UnitSchema.statics.toAPI = (doc) => ({
-  name: doc.name,
-  age: doc.age,
+
 });
 
 UnitSchema.statics.findByOwner = (ownerId, callback) => {
@@ -44,7 +37,7 @@ UnitSchema.statics.findByOwner = (ownerId, callback) => {
     owner: convertId(ownerId),
   };
 
-  return UnitModel.find(search).select('name type').exec(callback);
+  return UnitModel.find(search).select('type').exec(callback);
 };
 
 UnitModel = mongoose.model('Unit', UnitSchema);
