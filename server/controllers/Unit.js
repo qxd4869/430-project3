@@ -28,8 +28,8 @@ const makeUnit = (req, res) => {
   const unitPromise = newUnit.save();
   
   //Remember before
-  //req.session.account.unitCount += 1;
-  //req.session.account.save();
+  req.session.account.unitCount += 1;
+  req.session.account.save();
   
   unitPromise.then(() => res.json({ redirect: '/maker' }));
 
