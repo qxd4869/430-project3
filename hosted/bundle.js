@@ -16,6 +16,9 @@ var handleUnit = function handleUnit(e, csrf, clicked_name) {
   //Play units ready sound
   $(audioFile)[0].play();
 
+  //before you play sound
+  //check if a song is being played
+
   $(function () {
     $("audio").on("play", function () {
       $("audio").not(this).each(function (index, audio) {
@@ -50,9 +53,9 @@ var UnitForm = function UnitForm(props) {
     React.createElement('img', { src: '/assets/img/goliah.png', onClick: function onClick(e) {
         handleUnit(e, props.csrf, "goliah");
       }, alt: 'goliah', className: 'produceIcon' }),
-    React.createElement('img', { src: '/assets/img/goliah.png', onClick: function onClick(e) {
-        handleUnit(e, props.csrf, "goliah");
-      }, alt: 'goliah', className: 'produceIcon2' }),
+    React.createElement('img', { src: '/assets/img/cyclone.png', onClick: function onClick(e) {
+        handleUnit(e, props.csrf, "cyclone");
+      }, alt: 'cyclone', className: 'produceIcon2' }),
     React.createElement('input', { type: 'hidden', name: '_csrf', value: props.csrf })
   );
 };
@@ -93,6 +96,8 @@ var loadUnitsFromServer = function loadUnitsFromServer(csrf) {
 
 var setup = function setup(csrf) {
 
+  //set interval for the user for resources
+
   ReactDOM.render(React.createElement(UnitForm, { csrf: csrf }), document.querySelector('#makeUnit'));
 
   ReactDOM.render(React.createElement(UnitList, { units: [], csrf: csrf }), document.querySelector('#units'));
@@ -113,11 +118,11 @@ $(document).ready(function () {
 
 var handleError = function handleError(message) {
   $('#errorMessage').text(message);
-  $('#unitMessage').animate({ width: 'toggle' }, 350);
+  $('#unitMessage').animate({ width: 'toggle' }, 700);
 };
 
 var redirect = function redirect(response) {
-  $('#unitMessage').animate({ width: 'hide' }, 350);
+  $('#unitMessage').animate({ width: 'hide' }, 700);
   window.location = response.redirect;
 };
 

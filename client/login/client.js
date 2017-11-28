@@ -4,7 +4,7 @@ const handleLogin = (e) => {
   $('#unitMessage').animate({ width: 'hide' }, 350);
   
   if ($('#user').val() === '' || $('#pass').val() === '') {
-    handleError('RAWR! Username or password missing!');
+    handleError('Username or password missing!');
     return false;
   }
   

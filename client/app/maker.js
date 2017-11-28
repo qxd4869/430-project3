@@ -14,6 +14,9 @@ const handleUnit = (e, csrf, clicked_name) => {
   //Play units ready sound
   $(audioFile)[0].play();
   
+  //before you play sound
+  //check if a song is being played
+  
   $(function(){
       $("audio").on("play", function() {
           $("audio").not(this).each(function(index, audio) {
@@ -40,7 +43,7 @@ const UnitForm = (props) => {
       <img src="/assets/img/vulture.png" onClick={(e) => { handleUnit(e, props.csrf, "vulture" );}} alt="vulture" className="produceIcon" />
       <img src="/assets/img/siegetank.png" onClick={(e) => { handleUnit(e, props.csrf, "siegetank" );}} alt="siege tank" className="produceIcon" />
       <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
-      <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon2" />
+      <img src="/assets/img/cyclone.png" onClick={(e) => { handleUnit(e, props.csrf, "cyclone" );}} alt="cyclone" className="produceIcon2" />
       <input type="hidden" name="_csrf" value={props.csrf} />
     </form>
   );
@@ -80,6 +83,8 @@ const loadUnitsFromServer = (csrf) => {
 };
 
 const setup = (csrf) => {
+  
+  //set interval for the user for resources
   
   ReactDOM.render(
     <UnitForm csrf={csrf} />,

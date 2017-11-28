@@ -8,6 +8,7 @@ const iterations = 10000;
 const saltLength = 64;
 const keyLength = 64;
 
+
 const AccountSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -28,6 +29,10 @@ const AccountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  unitCount:{
+    type: Number,
+    default: 0,
+  }
 });
 
 AccountSchema.statics.toAPI = doc => ({

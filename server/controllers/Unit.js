@@ -17,7 +17,7 @@ const makeUnit = (req, res) => {
 //  if (!req.body.name) {
 //    return res.status(400).json({ error: 'RAWR! Both name and age are required!' });
 //  }
-
+  
   const unitData = {
     type: req.body.type,
     owner: req.session.account._id,
@@ -26,7 +26,11 @@ const makeUnit = (req, res) => {
   const newUnit = new Unit.UnitModel(unitData);
 
   const unitPromise = newUnit.save();
-
+  
+  //Remember before
+  //req.session.account.unitCount += 1;
+  //req.session.account.save();
+  
   unitPromise.then(() => res.json({ redirect: '/maker' }));
 
   unitPromise.catch((err) => {

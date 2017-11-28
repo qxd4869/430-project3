@@ -6,7 +6,7 @@ var handleLogin = function handleLogin(e) {
   $('#unitMessage').animate({ width: 'hide' }, 350);
 
   if ($('#user').val() === '' || $('#pass').val() === '') {
-    handleError('RAWR! Username or password missing!');
+    handleError('Username or password missing!');
     return false;
   }
 
@@ -139,11 +139,11 @@ $(document).ready(function () {
 
 var handleError = function handleError(message) {
   $('#errorMessage').text(message);
-  $('#unitMessage').animate({ width: 'toggle' }, 350);
+  $('#unitMessage').animate({ width: 'toggle' }, 700);
 };
 
 var redirect = function redirect(response) {
-  $('#unitMessage').animate({ width: 'hide' }, 350);
+  $('#unitMessage').animate({ width: 'hide' }, 700);
   window.location = response.redirect;
 };
 

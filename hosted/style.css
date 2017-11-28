@@ -64,7 +64,6 @@ nav:nth-child(1) {
 
 .unitForm {
     border: 2px solid #338acc;
-    height: 100px;
     width: 100%;   
     padding-bottom: 10px;
     background-color: #55acee;
@@ -203,7 +202,6 @@ img.unitFace {
 img.produceIcon {
     height: 50px;
     width: 50px;
-    float:left;
     margin-top: 0px;
     margin-right: 1px;
     border: 1px solid #89F7C5;
@@ -219,6 +217,13 @@ img.produceIcon2 {
     background-color: #113D21;
     border-radius: 8px;
     display: block;
+}
+
+.produceIcon2:hover {
+  background-color: #89F7C5;
+}
+.produceIcon2:active {
+  background-color: #89F7C5;
 }
 
 .produceIcon:hover {
