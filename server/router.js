@@ -11,6 +11,7 @@ const router = (app) => {
   app.get('/maker', mid.requiresLogin, controllers.Unit.makerPage);
   app.post('/maker', mid.requiresLogin, controllers.Unit.make);
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
+  //app.get('/updateResource', mid.requiresLogin, controllers.Unit.makerPage);
 };
 
 module.exports = router;

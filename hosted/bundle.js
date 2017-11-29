@@ -17,7 +17,7 @@ var handleUnit = function handleUnit(e, csrf, clicked_name) {
   $(audioFile)[0].play();
 
   //before you play sound
-  //check if a song is being played
+  //check if a song is   being played
 
   sendAjax('POST', $('#unitForm').attr('action'), sendData, function () {
     loadUnitsFromServer(csrf);
@@ -87,9 +87,19 @@ var loadUnitsFromServer = function loadUnitsFromServer(csrf) {
   });
 };
 
+var updateResource = function updateResource(csrf) {
+  sendAjax('GET', '/updateResource', null, function (data) {
+    ReactDOM.render(React.createElement(UnitForm, { csrf: csrf }), document.querySelector('#makeUnit'));
+  });
+};
+
 var setup = function setup(csrf) {
 
   //set interval for the user for resources
+  //setInterval(()) => {
+  //  updateResource();
+  //}, 20);
+
 
   ReactDOM.render(React.createElement(UnitForm, { csrf: csrf }), document.querySelector('#makeUnit'));
 

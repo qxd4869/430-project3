@@ -15,7 +15,7 @@ const handleUnit = (e, csrf, clicked_name) => {
   $(audioFile)[0].play();
   
   //before you play sound
-  //check if a song is being played
+  //check if a song is   being played
   
   sendAjax('POST', $('#unitForm').attr('action'), sendData, () => {
     loadUnitsFromServer(csrf);
@@ -75,9 +75,22 @@ const loadUnitsFromServer = (csrf) => {
   });
 };
 
+const updateResource = (csrf) => {
+  sendAjax('GET', '/updateResource', null, (data) => {
+    ReactDOM.render(
+      <UnitForm csrf={csrf} />,
+      document.querySelector('#makeUnit'),
+    );
+  });
+}
+
 const setup = (csrf) => {
   
   //set interval for the user for resources
+  //setInterval(()) => {
+  //  updateResource();
+  //}, 20);
+  
   
   ReactDOM.render(
     <UnitForm csrf={csrf} />,

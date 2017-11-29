@@ -15,9 +15,6 @@ const makerPage = (req, res) => {
 };
 
 const makeUnit = (req, res) => {
-//  if (!req.body.name) {
-//    return res.status(400).json({ error: 'RAWR! Both name and age are required!' });
-//  }
   
   let id = req.session.account._id;
   
@@ -27,35 +24,37 @@ const makeUnit = (req, res) => {
   };
 
   const newUnit = new Unit.UnitModel(unitData);
-
-  const unitPromise = newUnit.save();
-  
-  //req.session.account.unitCount += 1;
-  //req.session.account.save();
+  let unitPromise = 5;
       
-  unitPromise.then(() => {
-    Account.AccountModel.findById(id, (err, docs) => {
+
+    Account.AccountModel.findById(id, (err, userAccount) => {
       if (err) {
         console.log(err);
         return res.status(400).json({ error: 'RAWR! An error occurred!' });
       }
       
-      //What's next?
+      if(userAccount.unitCount > 5){
+        return res.status(400).json({ error: 'Additional Supply Depots required' });
+      }
+      unitPromise = newUnit.save();
+      unitPromise.then(() => {
+        userAccount.unitCount++;
+        userAccount.save();
+      });
       
-      console.dir(docs);
+      unitPromise.catch((err) => {
+        console.log(err);
+        if (err.code === 11000) {
+          return res.status(400).json({ error: 'RAWR! Unit already exists!' });
+        }
+
+        return res.status(400).json({ error: 'RAWR! An error occurred!' });
+      });
+      
+      res.json({ redirect: '/maker' });
     });
-    res.json({ redirect: '/maker' })
-  
-  });
 
-  unitPromise.catch((err) => {
-    console.log(err);
-    if (err.code === 11000) {
-      return res.status(400).json({ error: 'RAWR! Unit already exists!' });
-    }
 
-    return res.status(400).json({ error: 'RAWR! An error occurred!' });
-  });
 
   return unitPromise;
 };
