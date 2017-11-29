@@ -1,6 +1,7 @@
 const models = require('../models');
 
 const Unit = models.Unit;
+const Account = models.Account;
 
 const makerPage = (req, res) => {
   Unit.UnitModel.findByOwner(req.session.account._id, (err, docs) => {
@@ -18,6 +19,8 @@ const makeUnit = (req, res) => {
 //    return res.status(400).json({ error: 'RAWR! Both name and age are required!' });
 //  }
   
+  let id = req.session.account._id;
+  
   const unitData = {
     type: req.body.type,
     owner: req.session.account._id,
@@ -27,11 +30,23 @@ const makeUnit = (req, res) => {
 
   const unitPromise = newUnit.save();
   
-  //Remember before
-  req.session.account.unitCount += 1;
-  req.session.account.save();
+  //req.session.account.unitCount += 1;
+  //req.session.account.save();
+      
+  unitPromise.then(() => {
+    Account.AccountModel.findById(id, (err, docs) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).json({ error: 'RAWR! An error occurred!' });
+      }
+      
+      //What's next?
+      
+      console.dir(docs);
+    });
+    res.json({ redirect: '/maker' })
   
-  unitPromise.then(() => res.json({ redirect: '/maker' }));
+  });
 
   unitPromise.catch((err) => {
     console.log(err);
@@ -54,7 +69,8 @@ const getUnits = (request, response) => {
       console.log(err);
       return res.status(400).json({ error: 'RAWR! An error occurred!' });
     }
-
+     
+   
     return res.json({ units: docs });
   });
 };

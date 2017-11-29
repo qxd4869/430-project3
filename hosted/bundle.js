@@ -19,13 +19,6 @@ var handleUnit = function handleUnit(e, csrf, clicked_name) {
   //before you play sound
   //check if a song is being played
 
-  $(function () {
-    $("audio").on("play", function () {
-      $("audio").not(this).each(function (index, audio) {
-        audio.pause();
-      });
-    });
-  });
   sendAjax('POST', $('#unitForm').attr('action'), sendData, function () {
     loadUnitsFromServer(csrf);
   });

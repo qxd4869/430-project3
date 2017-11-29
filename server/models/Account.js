@@ -32,7 +32,12 @@ const AccountSchema = new mongoose.Schema({
   unitCount:{
     type: Number,
     default: 0,
+  },
+  resources:{
+    type: Number,
+    default: 0,
   }
+  
 });
 
 AccountSchema.statics.toAPI = doc => ({
@@ -86,6 +91,15 @@ AccountModel.findByUsername(username, (err, doc) => {
     return callback();
   });
 });
+
+AccountSchema.statics.findById = (id, callback) => {
+  const search = {
+    _id: id,
+  };
+
+  return AccountModel.findOne(search, callback);
+};
+
 
 AccountModel = mongoose.model('Account', AccountSchema);
 
