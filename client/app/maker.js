@@ -37,6 +37,7 @@ const UnitForm = (props) => {
       <img src="/assets/img/siegetank.png" onClick={(e) => { handleUnit(e, props.csrf, "siegetank" );}} alt="siege tank" className="produceIcon" />
       <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
       <img src="/assets/img/cyclone.png" onClick={(e) => { handleUnit(e, props.csrf, "cyclone" );}} alt="cyclone" className="produceIcon2" />
+      <span>Resources: {props.resources}</span>
       <input type="hidden" name="_csrf" value={props.csrf} />
     </form>
   );
@@ -72,24 +73,22 @@ const loadUnitsFromServer = (csrf) => {
       <UnitList units={data.units} csrf={csrf} />,
       document.querySelector('#units'),
     );
-  });
-};
-
-const updateResource = (csrf) => {
-  sendAjax('GET', '/updateResource', null, (data) => {
+    console.dir(data.resources);
     ReactDOM.render(
-      <UnitForm csrf={csrf} />,
+      <UnitForm csrf={csrf} resources={data.resources} />,
       document.querySelector('#makeUnit'),
     );
   });
-}
+};
+
+
 
 const setup = (csrf) => {
   
   //set interval for the user for resources
-  //setInterval(()) => {
-  //  updateResource();
-  //}, 20);
+    setInterval(() => {
+       loadUnitsFromServer();
+    }, 200);
   
   
   ReactDOM.render(

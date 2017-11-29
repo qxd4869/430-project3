@@ -33,7 +33,7 @@ const makeUnit = (req, res) => {
         return res.status(400).json({ error: 'RAWR! An error occurred!' });
       }
       
-      if(userAccount.unitCount > 5){
+      if(userAccount.unitCount > 50){
         return res.status(400).json({ error: 'Additional Supply Depots required' });
       }
       unitPromise = newUnit.save();
@@ -54,23 +54,28 @@ const makeUnit = (req, res) => {
       res.json({ redirect: '/maker' });
     });
 
-
-
   return unitPromise;
 };
 
 const getUnits = (request, response) => {
   const req = request;
   const res = response;
-
+  let resources = 0;
   return Unit.UnitModel.findByOwner(req.session.account._id, (err, docs) => {
     if (err) {
       console.log(err);
       return res.status(400).json({ error: 'RAWR! An error occurred!' });
     }
-     
-   
-    return res.json({ units: docs });
+    
+    Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
+        userAccount.resources++;
+        userAccount.save();
+        resources = userAccount.resources;
+        //console.dir(resources);
+        return res.json({ units: docs, resources:resources});
+    });
+    
+
   });
 };
 

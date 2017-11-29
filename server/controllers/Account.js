@@ -83,20 +83,6 @@ const signup = (request, response) => {
   });
 };
 
-const updateResource = (request, response) => {
-  const req = request;
-  const res = response;
-
-  return Account.AccountModel.authenticate(username, password, (err, account) => {
-    if (err || !account) {
-      return res.status(401).json({ error: 'Wrong username or password!' });
-    }
-
-    req.session.account = Account.AccountModel.toAPI(account);
-
-    return res.json({ redirect: '/maker' });
-  });
-};
 
 const getToken = (request, response) => {
   const req = request;
