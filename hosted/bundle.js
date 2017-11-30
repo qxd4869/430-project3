@@ -90,7 +90,11 @@ var UnitList = function UnitList(props) {
 var loadUnitsFromServer = function loadUnitsFromServer(csrf) {
   sendAjax('GET', '/getUnits', null, function (data) {
     ReactDOM.render(React.createElement(UnitList, { units: data.units, csrf: csrf }), document.querySelector('#units'));
-    console.dir(data.resources);
+  });
+};
+
+var updateResources = function updateResources(csrf) {
+  sendAjax('POST', '/updateResources', null, function (data) {
     ReactDOM.render(React.createElement(UnitForm, { csrf: csrf, resources: data.resources }), document.querySelector('#makeUnit'));
   });
 };
@@ -98,15 +102,15 @@ var loadUnitsFromServer = function loadUnitsFromServer(csrf) {
 var setup = function setup(csrf) {
 
   //set interval for the user for resources
-  setInterval(function () {
-    loadUnitsFromServer();
-  }, 200);
 
   ReactDOM.render(React.createElement(UnitForm, { csrf: csrf }), document.querySelector('#makeUnit'));
 
   ReactDOM.render(React.createElement(UnitList, { units: [], csrf: csrf }), document.querySelector('#units'));
 
   loadUnitsFromServer(csrf);
+  setInterval(function () {
+    updateResources();
+  }, 20);
 };
 
 var getToken = function getToken() {

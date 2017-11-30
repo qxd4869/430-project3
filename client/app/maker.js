@@ -73,12 +73,16 @@ const loadUnitsFromServer = (csrf) => {
       <UnitList units={data.units} csrf={csrf} />,
       document.querySelector('#units'),
     );
-    console.dir(data.resources);
+  });
+};
+
+const updateResources = (csrf) => {
+  sendAjax('POST', '/updateResources', null, (data) => {
     ReactDOM.render(
       <UnitForm csrf={csrf} resources={data.resources} />,
       document.querySelector('#makeUnit'),
     );
-  });
+  }); 
 };
 
 
@@ -86,10 +90,6 @@ const loadUnitsFromServer = (csrf) => {
 const setup = (csrf) => {
   
   //set interval for the user for resources
-    setInterval(() => {
-       loadUnitsFromServer();
-    }, 200);
-  
   
   ReactDOM.render(
     <UnitForm csrf={csrf} />,
@@ -102,6 +102,9 @@ const setup = (csrf) => {
   );
   
   loadUnitsFromServer(csrf);
+  setInterval(() => {
+       updateResources();
+  }, 20);
 };
 
 const getToken = () => {

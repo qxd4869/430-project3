@@ -83,6 +83,20 @@ const signup = (request, response) => {
   });
 };
 
+const updateResources = (request, response) => {
+  const req = request;
+  const res = response;
+  let resources = 0;
+  
+  Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
+      userAccount.resources++;
+      userAccount.save();
+      resources = userAccount.resources;
+      //console.dir(resources);
+      console.dir(resources);
+      return res.json({resources:resources});
+  });
+};
 
 const getToken = (request, response) => {
   const req = request;
@@ -100,5 +114,6 @@ module.exports = {
   logout,
   login,
   signup,
+  updateResources,
   getToken,
 };

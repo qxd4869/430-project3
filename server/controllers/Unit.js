@@ -33,7 +33,7 @@ const makeUnit = (req, res) => {
         return res.status(400).json({ error: 'RAWR! An error occurred!' });
       }
       
-      if(userAccount.unitCount > 50){
+      if(userAccount.unitCount > 100){
         return res.status(400).json({ error: 'Additional Supply Depots required' });
       }
       unitPromise = newUnit.save();
@@ -68,14 +68,9 @@ const getUnits = (request, response) => {
     }
     
     Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
-        userAccount.resources++;
-        userAccount.save();
-        resources = userAccount.resources;
         //console.dir(resources);
         return res.json({ units: docs, resources:resources});
     });
-    
-
   });
 };
 
