@@ -29,15 +29,15 @@ const AccountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  unitCount:{
+  unitCount: {
     type: Number,
     default: 0,
   },
-  resources:{
+  resources: {
     type: Number,
     default: 0,
-  }
-  
+  },
+
 });
 
 AccountSchema.statics.toAPI = doc => ({

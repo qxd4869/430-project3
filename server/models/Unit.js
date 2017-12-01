@@ -28,9 +28,9 @@ const UnitSchema = new mongoose.Schema({
   },
 });
 
-UnitSchema.statics.toAPI = (doc) => ({
-
-});
+// UnitSchema.statics.toAPI = (doc) => ({
+//
+// });
 
 UnitSchema.statics.findByOwner = (ownerId, callback) => {
   const search = {

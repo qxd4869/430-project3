@@ -36,8 +36,9 @@ const UnitForm = (props) => {
       <img src="/assets/img/vulture.png" onClick={(e) => { handleUnit(e, props.csrf, "vulture" );}} alt="vulture" className="produceIcon" />
       <img src="/assets/img/siegetank.png" onClick={(e) => { handleUnit(e, props.csrf, "siegetank" );}} alt="siege tank" className="produceIcon" />
       <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
+      <span className="resources"> {props.resources} Minerals  {props.unitCount}/10 </span>
       <img src="/assets/img/cyclone.png" onClick={(e) => { handleUnit(e, props.csrf, "cyclone" );}} alt="cyclone" className="produceIcon2" />
-      <span>Resources: {props.resources}</span>
+
       <input type="hidden" name="_csrf" value={props.csrf} />
     </form>
   );
@@ -77,20 +78,18 @@ const loadUnitsFromServer = (csrf) => {
 };
 
 const updateResources = (csrf) => {
-  sendAjax('POST', '/updateResources', null, (data) => {
+  sendAjax('GET', '/updateResources', null, (data) => {
+    console.dir(data.resources);
     ReactDOM.render(
-      <UnitForm csrf={csrf} resources={data.resources} />,
+      <UnitForm csrf={csrf} resources={data.resources} unitCount={data.unitCount} />,
       document.querySelector('#makeUnit'),
     );
-  }); 
+  });
 };
-
-
 
 const setup = (csrf) => {
   
   //set interval for the user for resources
-  
   ReactDOM.render(
     <UnitForm csrf={csrf} />,
     document.querySelector('#makeUnit'),
@@ -102,9 +101,10 @@ const setup = (csrf) => {
   );
   
   loadUnitsFromServer(csrf);
+  
   setInterval(() => {
-       updateResources();
-  }, 20);
+       updateResources(csrf);
+  }, 200);
 };
 
 const getToken = () => {

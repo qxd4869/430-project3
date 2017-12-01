@@ -6,7 +6,7 @@ const Account = models.Account;
 const makerPage = (req, res) => {
   Unit.UnitModel.findByOwner(req.session.account._id, (err, docs) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
       return res.status(400).json({ error: 'RAWR! An error occurred!' });
     }
 
@@ -15,9 +15,8 @@ const makerPage = (req, res) => {
 };
 
 const makeUnit = (req, res) => {
-  
-  let id = req.session.account._id;
-  
+  const id = req.session.account._id;
+
   const unitData = {
     type: req.body.type,
     owner: req.session.account._id,
@@ -25,34 +24,36 @@ const makeUnit = (req, res) => {
 
   const newUnit = new Unit.UnitModel(unitData);
   let unitPromise = 5;
-      
 
-    Account.AccountModel.findById(id, (err, userAccount) => {
-      if (err) {
-        console.log(err);
-        return res.status(400).json({ error: 'RAWR! An error occurred!' });
-      }
-      
-      if(userAccount.unitCount > 100){
-        return res.status(400).json({ error: 'Additional Supply Depots required' });
-      }
-      unitPromise = newUnit.save();
-      unitPromise.then(() => {
-        userAccount.unitCount++;
-        userAccount.save();
-      });
-      
-      unitPromise.catch((err) => {
-        console.log(err);
-        if (err.code === 11000) {
-          return res.status(400).json({ error: 'RAWR! Unit already exists!' });
-        }
 
-        return res.status(400).json({ error: 'RAWR! An error occurred!' });
-      });
-      
-      res.json({ redirect: '/maker' });
+  Account.AccountModel.findById(id, (err, userAccount) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'RAWR! An error occurred!' });
+    }
+
+    if (userAccount.unitCount > 10) {
+      return res.status(400).json({ error: 'You have maximum units already' });
+    }
+    unitPromise = newUnit.save();
+    unitPromise.then(() => {
+      const changeAccount = userAccount;
+      changeAccount.unitCount++;
+      changeAccount.resources -= 20;
+      changeAccount.save();
     });
+
+    unitPromise.catch((err2) => {
+      console.log(err2);
+      if (err2.code === 11000) {
+        return res.status(400).json({ error: 'RAWR! Unit already exists!' });
+      }
+
+      return res.status(400).json({ error: 'RAWR! An error occurred!' });
+    });
+
+    return res.json({ redirect: '/maker' });
+  });
 
   return unitPromise;
 };
@@ -66,11 +67,16 @@ const getUnits = (request, response) => {
       console.log(err);
       return res.status(400).json({ error: 'RAWR! An error occurred!' });
     }
-    
-    Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
-        //console.dir(resources);
-        return res.json({ units: docs, resources:resources});
+
+    Account.AccountModel.findById(req.session.account._id, (err2, userAccount) => {
+      const changeAccount = userAccount;
+      changeAccount.resources++;
+      changeAccount.save();
+      resources = userAccount.resources;
+        // console.dir(resources);
+      return res.json({ units: docs, resources });
     });
+    return resources;
   });
 };
 

@@ -73,7 +73,6 @@ const signup = (request, response) => {
 
     savePromise.catch((err) => {
       console.log(err);
-
       if (err.code === 11000) {
         return res.status(400).json({ error: 'RAWR! Username already exists!' });
       }
@@ -86,17 +85,18 @@ const signup = (request, response) => {
 const updateResources = (request, response) => {
   const req = request;
   const res = response;
-  let resources = 0;
-  
+
   Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
-      userAccount.resources++;
-      userAccount.save();
-      resources = userAccount.resources;
-      //console.dir(resources);
-      console.dir(resources);
-      return res.json({resources:resources});
+    const changeAccount = userAccount;
+    changeAccount.resources++;
+    changeAccount.save();
+    const resources = userAccount.resources;
+    const unitCount = userAccount.unitCount;
+      // console.dir(resources);
+    return res.json({ resources, unitCount });
   });
 };
+
 
 const getToken = (request, response) => {
   const req = request;

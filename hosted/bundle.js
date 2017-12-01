@@ -46,15 +46,18 @@ var UnitForm = function UnitForm(props) {
     React.createElement('img', { src: '/assets/img/goliah.png', onClick: function onClick(e) {
         handleUnit(e, props.csrf, "goliah");
       }, alt: 'goliah', className: 'produceIcon' }),
+    React.createElement(
+      'span',
+      { className: 'resources' },
+      ' ',
+      props.resources,
+      ' Minerals  ',
+      props.unitCount,
+      '/10 '
+    ),
     React.createElement('img', { src: '/assets/img/cyclone.png', onClick: function onClick(e) {
         handleUnit(e, props.csrf, "cyclone");
       }, alt: 'cyclone', className: 'produceIcon2' }),
-    React.createElement(
-      'span',
-      null,
-      'Resources: ',
-      props.resources
-    ),
     React.createElement('input', { type: 'hidden', name: '_csrf', value: props.csrf })
   );
 };
@@ -94,23 +97,24 @@ var loadUnitsFromServer = function loadUnitsFromServer(csrf) {
 };
 
 var updateResources = function updateResources(csrf) {
-  sendAjax('POST', '/updateResources', null, function (data) {
-    ReactDOM.render(React.createElement(UnitForm, { csrf: csrf, resources: data.resources }), document.querySelector('#makeUnit'));
+  sendAjax('GET', '/updateResources', null, function (data) {
+    console.dir(data.resources);
+    ReactDOM.render(React.createElement(UnitForm, { csrf: csrf, resources: data.resources, unitCount: data.unitCount }), document.querySelector('#makeUnit'));
   });
 };
 
 var setup = function setup(csrf) {
 
   //set interval for the user for resources
-
   ReactDOM.render(React.createElement(UnitForm, { csrf: csrf }), document.querySelector('#makeUnit'));
 
   ReactDOM.render(React.createElement(UnitList, { units: [], csrf: csrf }), document.querySelector('#units'));
 
   loadUnitsFromServer(csrf);
+
   setInterval(function () {
-    updateResources();
-  }, 20);
+    updateResources(csrf);
+  }, 200);
 };
 
 var getToken = function getToken() {
