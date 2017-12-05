@@ -49,12 +49,18 @@ var UnitForm = function UnitForm(props) {
     React.createElement(
       'span',
       { className: 'resources' },
+      props.gas,
       ' ',
-      props.resources,
-      ' Minerals  ',
       props.unitCount,
       '/10 '
     ),
+    React.createElement('img', { className: 'resourcesIcon', src: '/assets/img/gas.png' }),
+    React.createElement(
+      'span',
+      { className: 'resources' },
+      props.minerals
+    ),
+    React.createElement('img', { className: 'resourcesIcon', src: '/assets/img/mineral.png' }),
     React.createElement('img', { src: '/assets/img/cyclone.png', onClick: function onClick(e) {
         handleUnit(e, props.csrf, "cyclone");
       }, alt: 'cyclone', className: 'produceIcon2' }),
@@ -99,7 +105,7 @@ var loadUnitsFromServer = function loadUnitsFromServer(csrf) {
 var updateResources = function updateResources(csrf) {
   sendAjax('GET', '/updateResources', null, function (data) {
     console.dir(data.resources);
-    ReactDOM.render(React.createElement(UnitForm, { csrf: csrf, resources: data.resources, unitCount: data.unitCount }), document.querySelector('#makeUnit'));
+    ReactDOM.render(React.createElement(UnitForm, { csrf: csrf, minerals: data.minerals, gas: data.gas, unitCount: data.unitCount }), document.querySelector('#makeUnit'));
   });
 };
 

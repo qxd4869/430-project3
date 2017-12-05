@@ -37,8 +37,15 @@ nav {
     height: 100px;
     color: white;
     font-size: 1.3em;
-    float: right;
-  
+    float: right; 
+}
+
+.resourcesIcon {
+    width: 25px;
+    height: 25px;
+    color: white;
+    font-size: 1.3em;
+    float: right; 
 }
 
 nav:nth-child(1) {

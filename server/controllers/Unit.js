@@ -70,11 +70,8 @@ const getUnits = (request, response) => {
 
     Account.AccountModel.findById(req.session.account._id, (err2, userAccount) => {
       const changeAccount = userAccount;
-      changeAccount.resources++;
       changeAccount.save();
-      resources = userAccount.resources;
-        // console.dir(resources);
-      return res.json({ units: docs, resources });
+      return res.json({ units: docs});
     });
     return resources;
   });

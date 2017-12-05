@@ -33,7 +33,12 @@ const AccountSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  resources: {
+  minerals: {
+    type: Number,
+    default: 0,
+  },
+  
+  gas: {
     type: Number,
     default: 0,
   },

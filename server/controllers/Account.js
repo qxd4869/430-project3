@@ -88,12 +88,14 @@ const updateResources = (request, response) => {
 
   Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
     const changeAccount = userAccount;
-    changeAccount.resources++;
+    changeAccount.minerals++;
+    changeAccount.gas++;
     changeAccount.save();
-    const resources = userAccount.resources;
+    const minerals = userAccount.minerals;
+    const gas = userAccount.gas;
     const unitCount = userAccount.unitCount;
       // console.dir(resources);
-    return res.json({ resources, unitCount });
+    return res.json({ minerals, gas, unitCount });
   });
 };
 

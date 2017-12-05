@@ -36,9 +36,12 @@ const UnitForm = (props) => {
       <img src="/assets/img/vulture.png" onClick={(e) => { handleUnit(e, props.csrf, "vulture" );}} alt="vulture" className="produceIcon" />
       <img src="/assets/img/siegetank.png" onClick={(e) => { handleUnit(e, props.csrf, "siegetank" );}} alt="siege tank" className="produceIcon" />
       <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
-      <span className="resources"> {props.resources} Minerals  {props.unitCount}/10 </span>
+      <span className="resources">{props.gas} {props.unitCount}/10 </span>
+      <img className="resourcesIcon" src="/assets/img/gas.png"/>
+      
+      <span className="resources">{props.minerals}</span>
+      <img className="resourcesIcon" src="/assets/img/mineral.png"/>
       <img src="/assets/img/cyclone.png" onClick={(e) => { handleUnit(e, props.csrf, "cyclone" );}} alt="cyclone" className="produceIcon2" />
-
       <input type="hidden" name="_csrf" value={props.csrf} />
     </form>
   );
@@ -81,7 +84,7 @@ const updateResources = (csrf) => {
   sendAjax('GET', '/updateResources', null, (data) => {
     console.dir(data.resources);
     ReactDOM.render(
-      <UnitForm csrf={csrf} resources={data.resources} unitCount={data.unitCount} />,
+      <UnitForm csrf={csrf} minerals={data.minerals} gas={data.gas} unitCount={data.unitCount} />,
       document.querySelector('#makeUnit'),
     );
   });
