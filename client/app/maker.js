@@ -39,7 +39,7 @@ const UnitForm = (props) => {
       
       
       <span className="resources">{props.unitCount}/10 </span>
-      <span className="resources">{props.gas} </span>
+      <span className="resources">{props.gas}</span>
       <img className="resourcesIcon" src="/assets/img/gas.png"/>
       
       <span className="resources">{props.minerals}</span>
