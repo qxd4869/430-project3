@@ -49,10 +49,14 @@ var UnitForm = function UnitForm(props) {
     React.createElement(
       'span',
       { className: 'resources' },
-      props.gas,
-      ' ',
       props.unitCount,
       '/10 '
+    ),
+    React.createElement(
+      'span',
+      { className: 'resources' },
+      props.gas,
+      ' '
     ),
     React.createElement('img', { className: 'resourcesIcon', src: '/assets/img/gas.png' }),
     React.createElement(

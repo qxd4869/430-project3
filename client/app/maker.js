@@ -36,7 +36,10 @@ const UnitForm = (props) => {
       <img src="/assets/img/vulture.png" onClick={(e) => { handleUnit(e, props.csrf, "vulture" );}} alt="vulture" className="produceIcon" />
       <img src="/assets/img/siegetank.png" onClick={(e) => { handleUnit(e, props.csrf, "siegetank" );}} alt="siege tank" className="produceIcon" />
       <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
-      <span className="resources">{props.gas} {props.unitCount}/10 </span>
+      
+      
+      <span className="resources">{props.unitCount}/10 </span>
+      <span className="resources">{props.gas} </span>
       <img className="resourcesIcon" src="/assets/img/gas.png"/>
       
       <span className="resources">{props.minerals}</span>
