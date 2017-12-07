@@ -39,6 +39,7 @@ const UnitForm = (props) => {
       
       
       <span className="resources">{props.unitCount}/10 </span>
+      <img className="resourcesIcon" src="/assets/img/gas.png"/>
       <span className="resources">{props.gas}</span>
       <img className="resourcesIcon" src="/assets/img/gas.png"/>
       
@@ -85,12 +86,16 @@ const loadUnitsFromServer = (csrf) => {
 
 const updateResources = (csrf) => {
   sendAjax('GET', '/updateResources', null, (data) => {
-    console.dir(data.resources);
     ReactDOM.render(
       <UnitForm csrf={csrf} minerals={data.minerals} gas={data.gas} unitCount={data.unitCount} />,
       document.querySelector('#makeUnit'),
     );
   });
+  console.dir(Math.floor(Math.random() * 501) + 200);
+};
+
+const updateTimer = () => {
+  return Math.floor(Math.random() * 501) + 200;
 };
 
 const setup = (csrf) => {
@@ -108,8 +113,15 @@ const setup = (csrf) => {
   
   loadUnitsFromServer(csrf);
   
+//  let c = 0;
+//  setInterval(() => {
+//        c = updateTimer();
+//        console.dir(c);
+//  }, 200);
+  
+  
   setInterval(() => {
-       updateResources(csrf);
+        updateResources(csrf);
   }, 200);
 };
 

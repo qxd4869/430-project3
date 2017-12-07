@@ -52,6 +52,7 @@ var UnitForm = function UnitForm(props) {
       props.unitCount,
       '/10 '
     ),
+    React.createElement('img', { className: 'resourcesIcon', src: '/assets/img/gas.png' }),
     React.createElement(
       'span',
       { className: 'resources' },
@@ -107,9 +108,13 @@ var loadUnitsFromServer = function loadUnitsFromServer(csrf) {
 
 var updateResources = function updateResources(csrf) {
   sendAjax('GET', '/updateResources', null, function (data) {
-    console.dir(data.resources);
     ReactDOM.render(React.createElement(UnitForm, { csrf: csrf, minerals: data.minerals, gas: data.gas, unitCount: data.unitCount }), document.querySelector('#makeUnit'));
   });
+  console.dir(Math.floor(Math.random() * 501) + 200);
+};
+
+var updateTimer = function updateTimer() {
+  return Math.floor(Math.random() * 501) + 200;
 };
 
 var setup = function setup(csrf) {
@@ -120,6 +125,13 @@ var setup = function setup(csrf) {
   ReactDOM.render(React.createElement(UnitList, { units: [], csrf: csrf }), document.querySelector('#units'));
 
   loadUnitsFromServer(csrf);
+
+  //  let c = 0;
+  //  setInterval(() => {
+  //        c = updateTimer();
+  //        console.dir(c);
+  //  }, 200);
+
 
   setInterval(function () {
     updateResources(csrf);
