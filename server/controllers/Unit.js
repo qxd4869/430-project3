@@ -32,7 +32,7 @@ const makeUnit = (req, res) => {
       return res.status(400).json({ error: 'RAWR! An error occurred!' });
     }
 
-    if (userAccount.unitCount > 10) {
+    if (userAccount.unitCount >= userAccount.maxUnit) {
       return res.status(400).json({ error: 'You have maximum units already' });
     }
     unitPromise = newUnit.save();

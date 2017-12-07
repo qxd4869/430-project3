@@ -38,8 +38,8 @@ const UnitForm = (props) => {
       <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
       
       
-      <span className="resources">{props.unitCount}/10 </span>
-      <img className="resourcesIcon" src="/assets/img/gas.png"/>
+      <span className="resources">{props.unitCount}/{props.maxUnit} </span>
+      <img className="resourcesIcon" src="/assets/img/supply.png"/>
       <span className="resources">{props.gas}</span>
       <img className="resourcesIcon" src="/assets/img/gas.png"/>
       
@@ -87,7 +87,7 @@ const loadUnitsFromServer = (csrf) => {
 const updateResources = (csrf) => {
   sendAjax('GET', '/updateResources', null, (data) => {
     ReactDOM.render(
-      <UnitForm csrf={csrf} minerals={data.minerals} gas={data.gas} unitCount={data.unitCount} />,
+      <UnitForm csrf={csrf} minerals={data.minerals} gas={data.gas} unitCount={data.unitCount} maxUnit={data.maxUnit} />,
       document.querySelector('#makeUnit'),
     );
   });

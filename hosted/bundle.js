@@ -50,9 +50,11 @@ var UnitForm = function UnitForm(props) {
       'span',
       { className: 'resources' },
       props.unitCount,
-      '/10 '
+      '/',
+      props.maxUnit,
+      ' '
     ),
-    React.createElement('img', { className: 'resourcesIcon', src: '/assets/img/gas.png' }),
+    React.createElement('img', { className: 'resourcesIcon', src: '/assets/img/supply.png' }),
     React.createElement(
       'span',
       { className: 'resources' },
@@ -108,7 +110,7 @@ var loadUnitsFromServer = function loadUnitsFromServer(csrf) {
 
 var updateResources = function updateResources(csrf) {
   sendAjax('GET', '/updateResources', null, function (data) {
-    ReactDOM.render(React.createElement(UnitForm, { csrf: csrf, minerals: data.minerals, gas: data.gas, unitCount: data.unitCount }), document.querySelector('#makeUnit'));
+    ReactDOM.render(React.createElement(UnitForm, { csrf: csrf, minerals: data.minerals, gas: data.gas, unitCount: data.unitCount, maxUnit: data.maxUnit }), document.querySelector('#makeUnit'));
   });
   console.dir(Math.floor(Math.random() * 501) + 200);
 };

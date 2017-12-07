@@ -7,6 +7,10 @@ const loginPage = (req, res) => {
   res.render('login', { csrfToken: req.csrfToken() });
 };
 
+//const profilePage = (req, res) => {
+//  res.render('login', { csrfToken: req.csrfToken() });
+//};
+
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/');
@@ -94,8 +98,9 @@ const updateResources = (request, response) => {
     const minerals = userAccount.minerals;
     const gas = userAccount.gas;
     const unitCount = userAccount.unitCount;
+    const maxUnit = userAccount.maxUnit;
       // console.dir(resources);
-    return res.json({ minerals, gas, unitCount });
+    return res.json({ minerals, gas, unitCount, maxUnit });
   });
 };
 

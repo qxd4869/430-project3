@@ -45,7 +45,7 @@ const AccountSchema = new mongoose.Schema({
   
   maxUnit: {
    type: Number,
-   default: 0,
+   default: 10,
   }
 });
 
