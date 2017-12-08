@@ -61,7 +61,7 @@ const makeUnit = (req, res) => {
 const getUnits = (request, response) => {
   const req = request;
   const res = response;
-  let resources = 0;
+  const resources = 0;
   return Unit.UnitModel.findByOwner(req.session.account._id, (err, docs) => {
     if (err) {
       console.log(err);
@@ -71,7 +71,7 @@ const getUnits = (request, response) => {
     Account.AccountModel.findById(req.session.account._id, (err2, userAccount) => {
       const changeAccount = userAccount;
       changeAccount.save();
-      return res.json({ units: docs});
+      return res.json({ units: docs });
     });
     return resources;
   });

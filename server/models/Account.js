@@ -37,16 +37,16 @@ const AccountSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  
+
   gas: {
     type: Number,
     default: 0,
   },
-  
+
   maxUnit: {
-   type: Number,
-   default: 10,
-  }
+    type: Number,
+    default: 10,
+  },
 });
 
 AccountSchema.statics.toAPI = doc => ({

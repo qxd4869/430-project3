@@ -7,9 +7,53 @@ const loginPage = (req, res) => {
   res.render('login', { csrfToken: req.csrfToken() });
 };
 
-//const profilePage = (req, res) => {
-//  res.render('login', { csrfToken: req.csrfToken() });
-//};
+const profilePage = (req, res) => {
+  res.render('profile', { csrfToken: req.csrfToken() });
+};
+
+const changePass = (request, response) => {
+
+//  Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
+//    const changeAccount = userAccount;
+//    changeAccount.password = `${req.body.pass}`;
+//    req.session.account.password = changeAccount.password;
+//    changeAccount.save();
+//    const minerals = userAccount.minerals;
+//     return res.json({ redirect: '/profile' });
+//  });
+  
+  const req = request;
+  const res = response;
+
+  // cast to strings to cover up some security flaws
+  let password= `${req.body.pass}`;
+
+
+  return Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
+    if (err || !userAccount) {
+      return res.status(401).json({ error: 'Commander, you got a wrong password' });
+    }
+
+    const newAccount = userAccount;
+
+    return Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+      newAccount.password = hash;
+      newAccount.salt = salt;
+
+      const savePromise = newAccount.save();
+
+      savePromise.then(() => res.json({
+        password: newAccount.password,
+      }));
+
+      savePromise.catch((saveErr) => {
+        res.json(saveErr);
+      });
+
+      return res.json({ redirect: '/profile' });
+    });
+  });
+};
 
 const logout = (req, res) => {
   req.session.destroy();
@@ -99,7 +143,6 @@ const updateResources = (request, response) => {
     const gas = userAccount.gas;
     const unitCount = userAccount.unitCount;
     const maxUnit = userAccount.maxUnit;
-      // console.dir(resources);
     return res.json({ minerals, gas, unitCount, maxUnit });
   });
 };
@@ -118,6 +161,8 @@ const getToken = (request, response) => {
 
 module.exports = {
   loginPage,
+  profilePage,
+  changePass,
   logout,
   login,
   signup,
