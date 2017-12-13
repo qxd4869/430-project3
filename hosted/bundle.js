@@ -5,6 +5,7 @@ var handleUnit = function handleUnit(e, csrf, clicked_name) {
 
   $('#unitMessage').animate({ width: 'hide' }, 350);
 
+  switch (clicked_name) {}
   var data = {
     type: clicked_name,
     _csrf: csrf
@@ -37,15 +38,37 @@ var UnitForm = function UnitForm(props) {
       action: '/maker',
       method: 'POST',
       className: 'unitForm' },
-    React.createElement('img', { src: '/assets/img/vulture.png', onClick: function onClick(e) {
+    React.createElement('img', { id: 'vulture', src: '/assets/img/vulture.png', onClick: function onClick(e) {
         handleUnit(e, props.csrf, "vulture");
       }, alt: 'vulture', className: 'produceIcon' }),
-    React.createElement('img', { src: '/assets/img/siegetank.png', onClick: function onClick(e) {
+    React.createElement('img', { id: 'siegetank', src: '/assets/img/siegetank.png', onClick: function onClick(e) {
         handleUnit(e, props.csrf, "siegetank");
       }, alt: 'siege tank', className: 'produceIcon' }),
-    React.createElement('img', { src: '/assets/img/goliah.png', onClick: function onClick(e) {
+    React.createElement('img', { id: 'goliah', src: '/assets/img/goliah.png', onClick: function onClick(e) {
         handleUnit(e, props.csrf, "goliah");
       }, alt: 'goliah', className: 'produceIcon' }),
+    React.createElement(
+      'span',
+      { className: 'info' },
+      React.createElement('img', { className: 'popupResourceIcon', src: '/assets/img/mineral.png' }),
+      React.createElement(
+        'span',
+        { id: 'mineral', className: 'popupResource' },
+        '150'
+      ),
+      React.createElement('img', { className: 'popupResourceIcon', src: '/assets/img/gas.png' }),
+      React.createElement(
+        'span',
+        { id: 'gas', className: 'popupResource' },
+        '100'
+      ),
+      React.createElement('img', { className: 'popupResourceIcon', src: '/assets/img/supply.png' }),
+      React.createElement(
+        'span',
+        { id: 'supply', className: 'popupResource' },
+        '2'
+      )
+    ),
     React.createElement(
       'span',
       { className: 'resources' },
@@ -112,7 +135,7 @@ var updateResources = function updateResources(csrf) {
   sendAjax('GET', '/updateResources', null, function (data) {
     ReactDOM.render(React.createElement(UnitForm, { csrf: csrf, minerals: data.minerals, gas: data.gas, unitCount: data.unitCount, maxUnit: data.maxUnit }), document.querySelector('#makeUnit'));
   });
-  console.dir(Math.floor(Math.random() * 501) + 200);
+  //console.dir(Math.floor(Math.random() * 501) + 200);
 };
 
 var updateTimer = function updateTimer() {
@@ -128,12 +151,7 @@ var setup = function setup(csrf) {
 
   loadUnitsFromServer(csrf);
 
-  //  let c = 0;
-  //  setInterval(() => {
-  //        c = updateTimer();
-  //        console.dir(c);
-  //  }, 200);
-
+  setTooltip();
 
   setInterval(function () {
     updateResources(csrf);
@@ -144,6 +162,22 @@ var getToken = function getToken() {
   sendAjax('GET', 'getToken', null, function (result) {
     setup(result.csrfToken);
   });
+};
+
+var setTooltip = function setTooltip() {
+  var info = document.querySelector(".info");
+  var produceIcon = document.getElementsByClassName("produceIcon");
+  for (var i = 0; i < produceIcon.length; i++) {
+    produceIcon[i].addEventListener('mouseover', function () {
+      info.classList.toggle("show");
+    });
+
+    produceIcon[i].addEventListener('mouseout', function () {
+      info.classList.toggle("show");
+    });
+
+    //Do more tomorrow
+  }
 };
 
 $(document).ready(function () {

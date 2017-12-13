@@ -57,6 +57,7 @@ nav:nth-child(1) {
     padding: 5px;
     padding-top: 12px;
     padding-left: 20px;
+    cursor: pointer;
     color: white;
     font-size: 1.3em;
     float: left;
@@ -130,7 +131,7 @@ nav:nth-child(1) {
     margin: 0 auto;
     margin-top: 14px;
     font-size: 1.2em;
-    width: 150px;
+    width: 200px;
     background-color: #55acee;
     border-radius: 2px;
     border-color: #66acee;
@@ -217,6 +218,8 @@ img.produceIcon {
     border: 1px solid #89F7C5;
     background-color: #113D21;
     border-radius: 8px;
+    cursor: pointer;
+    
 }
 img.produceIcon2 {
     height: 50px;
@@ -227,6 +230,7 @@ img.produceIcon2 {
     background-color: #113D21;
     border-radius: 8px;
     display: block;
+    cursor: pointer; 
 }
 
 .produceIcon2:hover {
@@ -279,5 +283,37 @@ h3.unitType {
 
 .unit:last-child {
     margin-bottom:10px;
+}
+
+.info {
+    visibility: hidden;
+    width: 150px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+.popupResource{
+    height: 100px;
+    color: white;
+    font-size: 1.3em;
+}
+
+.popupResourceIcon {
+    width: 25px;
+    height: 25px;
+    margin-left: 0px;
+    color: white;
+    font-size: 1.3em;
 }
 

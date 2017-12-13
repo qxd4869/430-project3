@@ -13,14 +13,6 @@ const profilePage = (req, res) => {
 
 const changePass = (request, response) => {
 
-//  Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
-//    const changeAccount = userAccount;
-//    changeAccount.password = `${req.body.pass}`;
-//    req.session.account.password = changeAccount.password;
-//    changeAccount.save();
-//    const minerals = userAccount.minerals;
-//     return res.json({ redirect: '/profile' });
-//  });
   
   const req = request;
   const res = response;

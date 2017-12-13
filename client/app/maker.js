@@ -3,6 +3,9 @@ const handleUnit = (e, csrf, clicked_name) => {
   
   $('#unitMessage').animate({ width: 'hide' }, 350);
   
+  switch(clicked_name){
+      
+  }
   const data = {
     type: clicked_name,
     _csrf: csrf,
@@ -33,16 +36,21 @@ const UnitForm = (props) => {
           action="/maker"
           method="POST"
           className="unitForm">
-      <img src="/assets/img/vulture.png" onClick={(e) => { handleUnit(e, props.csrf, "vulture" );}} alt="vulture" className="produceIcon" />
-      <img src="/assets/img/siegetank.png" onClick={(e) => { handleUnit(e, props.csrf, "siegetank" );}} alt="siege tank" className="produceIcon" />
-      <img src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
-      
-      
+      <img id="vulture" src="/assets/img/vulture.png" onClick={(e) => { handleUnit(e, props.csrf, "vulture" );}} alt="vulture" className="produceIcon" />
+      <img id="siegetank" src="/assets/img/siegetank.png" onClick={(e) => { handleUnit(e, props.csrf, "siegetank" );}} alt="siege tank" className="produceIcon" />
+      <img id="goliah" src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
+      <span className="info">      
+           <img className="popupResourceIcon" src="/assets/img/mineral.png"/>
+           <span id="mineral" className="popupResource">150</span>
+           <img className="popupResourceIcon" src="/assets/img/gas.png"/>
+           <span id="gas" className="popupResource">100</span>
+           <img className="popupResourceIcon" src="/assets/img/supply.png"/>
+           <span id="supply" className="popupResource">2</span>
+      </span>
       <span className="resources">{props.unitCount}/{props.maxUnit} </span>
       <img className="resourcesIcon" src="/assets/img/supply.png"/>
       <span className="resources">{props.gas}</span>
       <img className="resourcesIcon" src="/assets/img/gas.png"/>
-      
       <span className="resources">{props.minerals}</span>
       <img className="resourcesIcon" src="/assets/img/mineral.png"/>
       <img src="/assets/img/cyclone.png" onClick={(e) => { handleUnit(e, props.csrf, "cyclone" );}} alt="cyclone" className="produceIcon2" />
@@ -91,7 +99,7 @@ const updateResources = (csrf) => {
       document.querySelector('#makeUnit'),
     );
   });
-  console.dir(Math.floor(Math.random() * 501) + 200);
+  //console.dir(Math.floor(Math.random() * 501) + 200);
 };
 
 const updateTimer = () => {
@@ -113,13 +121,8 @@ const setup = (csrf) => {
   
   loadUnitsFromServer(csrf);
   
-//  let c = 0;
-//  setInterval(() => {
-//        c = updateTimer();
-//        console.dir(c);
-//  }, 200);
-  
-  
+  setTooltip();
+    
   setInterval(() => {
         updateResources(csrf);
   }, 200);
@@ -130,6 +133,22 @@ const getToken = () => {
     setup(result.csrfToken);
   });
 };
+
+const setTooltip = () =>{
+  let info = document.querySelector(".info");
+  let produceIcon = document.getElementsByClassName("produceIcon");
+  for (let i = 0; i < produceIcon.length; i++) {
+      produceIcon[i].addEventListener('mouseover', function(){
+          info.classList.toggle("show");                   
+      });
+    
+      produceIcon[i].addEventListener('mouseout', function(){
+          info.classList.toggle("show");                   
+      });
+    
+      //Do more tomorrow
+  }
+}
 
 $(document).ready(() => {
   getToken();

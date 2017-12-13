@@ -8,6 +8,11 @@ const handleChangePass = (e) => {
     return false;
   }
   
+  if ($('#pass').val() !== $('#pass2').val()) {
+    handleError('RAWR! Passwords do not match!');
+    return false;
+  }
+  
   console.dir($('#pass').val());
   sendAjax('POST', $('#changePassForm').attr('action'), $('#changePassForm').serialize(), redirect);
   
