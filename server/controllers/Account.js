@@ -11,14 +11,15 @@ const profilePage = (req, res) => {
   res.render('profile', { csrfToken: req.csrfToken() });
 };
 
-const changePass = (request, response) => {
+const battlePage = (req, res) => {
+  res.render('battle', { csrfToken: req.csrfToken() });
+};
 
-  
+const changePass = (request, response) => {
   const req = request;
   const res = response;
 
   // cast to strings to cover up some security flaws
-  let password= `${req.body.pass}`;
 
 
   return Account.AccountModel.findById(req.session.account._id, (err, userAccount) => {
@@ -154,6 +155,7 @@ const getToken = (request, response) => {
 module.exports = {
   loginPage,
   profilePage,
+  battlePage,
   changePass,
   logout,
   login,

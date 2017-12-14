@@ -1,21 +1,44 @@
+
 const handleUnit = (e, csrf, clicked_name) => {
   e.preventDefault();
   
   $('#unitMessage').animate({ width: 'hide' }, 350);
   
-  switch(clicked_name){
-      
-  }
-  const data = {
-    type: clicked_name,
-    _csrf: csrf,
-  };
+  const popupMinerals = parseInt(document.getElementById("popupMinerals").innerHTML);
+  const popupGas = parseInt(document.getElementById("popupGas").innerHTML);
+  const popupSupply = parseInt(document.getElementById("popupSupply").innerHTML);
   
+  let data = {};
+  if(clicked_name === 'depot'){
+    data = {
+      type: clicked_name,
+      _csrf: csrf,
+      resources:{
+        popupMinerals: 100,
+        popupGas : 0,
+        popupSupply : 10 
+      },
+    };
+  }
+  else {
+    data = {
+      type: clicked_name,
+      _csrf: csrf,
+      resources:{
+        popupMinerals: popupMinerals,
+        popupGas : popupGas,
+        popupSupply : popupSupply  
+      },
+    };
+
+    //Data to send
+    let audioFile = "#" + clicked_name + "_ready";
+    //Play units ready sound
+    $(audioFile)[0].play();     
+  }
+
   //Data to send
   const sendData = $.param(data);
-  let audioFile = "#" + clicked_name + "_ready";
-  //Play units ready sound
-  $(audioFile)[0].play();
   
   //before you play sound
   //check if a song is   being played
@@ -41,19 +64,20 @@ const UnitForm = (props) => {
       <img id="goliah" src="/assets/img/goliah.png" onClick={(e) => { handleUnit(e, props.csrf, "goliah" );}} alt="goliah" className="produceIcon" />
       <span className="info">      
            <img className="popupResourceIcon" src="/assets/img/mineral.png"/>
-           <span id="mineral" className="popupResource">150</span>
+           <span id="popupMinerals" className="popupResource">150</span>
            <img className="popupResourceIcon" src="/assets/img/gas.png"/>
-           <span id="gas" className="popupResource">100</span>
+           <span id="popupGas" className="popupResource">100</span>
            <img className="popupResourceIcon" src="/assets/img/supply.png"/>
-           <span id="supply" className="popupResource">2</span>
+           <span id="popupSupply" className="popupResource">2</span>
       </span>
       <span className="resources">{props.unitCount}/{props.maxUnit} </span>
       <img className="resourcesIcon" src="/assets/img/supply.png"/>
-      <span className="resources">{props.gas}</span>
+      <span id="gas" className="resources">{props.gas}</span>
       <img className="resourcesIcon" src="/assets/img/gas.png"/>
-      <span className="resources">{props.minerals}</span>
+      <span id="minerals" className="resources">{props.minerals}</span>
       <img className="resourcesIcon" src="/assets/img/mineral.png"/>
-      <img src="/assets/img/cyclone.png" onClick={(e) => { handleUnit(e, props.csrf, "cyclone" );}} alt="cyclone" className="produceIcon2" />
+      <img id="cyclone" src="/assets/img/cyclone.png" onClick={(e) => { handleUnit(e, props.csrf, "cyclone" );}} alt="cyclone" className="produceIcon produceIcon2" />
+       <img id="depot" src="/assets/img/depot.png" onClick={(e) => { handleUnit(e, props.csrf, "depot");}} alt="depot" className="produceIcon depot" />
       <input type="hidden" name="_csrf" value={props.csrf} />
     </form>
   );
@@ -67,18 +91,56 @@ const UnitList = (props) => {
       </div>
     );
   }
-  
+  let vultures = 0;
+  let siegetanks = 0;
+  let goliahs = 0;
+  let cyclones = 0;
+
   const unitNodes = props.units.map((unit) => {
-    return (
-      <span key={unit._id} className="unit">
-        <img src={"/assets/img/"+ unit.type +".png"} alt="domo face" className="unitFace" />
-      </span>
-    );
+    if(unit.type == 'vulture'){
+      vultures++;
+    }
+    
+    if(unit.type == 'siegetank'){
+      siegetanks++;
+    }
+
+    if(unit.type == 'goliah'){
+      goliahs++;
+    }
+    
+    if(unit.type == 'cyclone'){
+      cyclones++;
+    }
+    
   });
   
   return (
-    <div className="unitList">
-      {unitNodes}
+    <div>
+      <div className="unitList">
+          <span key={unit._id} className="unit">    
+            <img src={"/assets/img/vulture.png"} alt="domo face" className="unitFace" />
+          </span>
+          <span>{vultures}</span>
+      </div>
+      <div className="unitList">
+          <span key={unit._id} className="unit">    
+            <img src={"/assets/img/siegetank.png"} alt="domo face" className="unitFace" />
+          </span>
+          <span>{siegetanks}</span>
+      </div>
+      <div className="unitList">
+          <span key={unit._id} className="unit">    
+            <img src={"/assets/img/goliah.png"} alt="domo face" className="unitFace" />
+          </span>
+        <span>{goliahs}</span>
+      </div>
+      <div className="unitList">
+          <span key={unit._id} className="unit">    
+            <img src={"/assets/img/cyclone.png"} alt="domo face" className="unitFace" />
+          </span>
+          <span>{cyclones}</span>
+      </div>
     </div>
   );
 };
@@ -142,12 +204,34 @@ const setTooltip = () =>{
           info.classList.toggle("show");                   
       });
     
-      produceIcon[i].addEventListener('mouseout', function(){
+      produceIcon[i].addEventListener("mouseout", function(){
           info.classList.toggle("show");                   
       });
-    
-      //Do more tomorrow
   }
+  
+  document.getElementById("vulture").addEventListener("mouseover", function(){
+      document.getElementById("popupMinerals").innerHTML = 75;
+      document.getElementById("popupGas").innerHTML = 0;
+      document.getElementById('popupSupply').innerHTML = 2;
+  });
+  
+  document.getElementById("siegetank").addEventListener("mouseover", function(){
+      document.getElementById("popupMinerals").innerHTML = 150;
+      document.getElementById("popupGas").innerHTML = 100; 
+      document.getElementById("popupSupply").innerHTML = 2;
+  });
+  
+  document.getElementById("goliah").addEventListener("mouseover", function(){
+      document.getElementById("popupMinerals").innerHTML = 100;
+      document.getElementById("popupGas").innerHTML = 50;
+      document.getElementById("popupSupply").innerHTML = 2;
+  });
+  
+  document.getElementById("cyclone").addEventListener("mouseover", function(){
+      document.getElementById("popupMinerals").innerHTML = 25;
+      document.getElementById("popupGas").innerHTML = 125;
+      document.getElementById("popupSupply").innerHTML = 2;
+  });
 }
 
 $(document).ready(() => {

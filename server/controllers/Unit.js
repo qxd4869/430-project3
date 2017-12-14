@@ -25,35 +25,70 @@ const makeUnit = (req, res) => {
   const newUnit = new Unit.UnitModel(unitData);
   let unitPromise = 5;
 
+  // Resources check part
+  const minerals = parseInt(req.body.resources.popupMinerals, 10);
+  const gas = parseInt(req.body.resources.popupGas, 10);
+  const supply = parseInt(req.body.resources.popupSupply, 10);
 
-  Account.AccountModel.findById(id, (err, userAccount) => {
-    if (err) {
-      console.log(err);
-      return res.status(400).json({ error: 'RAWR! An error occurred!' });
-    }
-
-    if (userAccount.unitCount >= userAccount.maxUnit) {
-      return res.status(400).json({ error: 'You have maximum units already' });
-    }
-    unitPromise = newUnit.save();
-    unitPromise.then(() => {
-      const changeAccount = userAccount;
-      changeAccount.unitCount++;
-      changeAccount.resources -= 20;
-      changeAccount.save();
-    });
-
-    unitPromise.catch((err2) => {
-      console.log(err2);
-      if (err2.code === 11000) {
-        return res.status(400).json({ error: 'RAWR! Unit already exists!' });
+  if (supply === '10') {
+    Account.AccountModel.findById(id, (err, userAccount) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).json({ error: 'RAWR! An error occurred!' });
       }
 
-      return res.status(400).json({ error: 'RAWR! An error occurred!' });
-    });
+        //    console.log(typeof(b));
+      if (minerals >= userAccount.minerals) {
+        return res.status(400).json({ error: 'Not enough minerals' });
+      }
 
-    return res.json({ redirect: '/maker' });
-  });
+      const changeAccount = userAccount;
+      changeAccount.maxUnit += 10;
+      changeAccount.minerals -= 100;
+      changeAccount.save();
+      return res.json({ redirect: '/maker' });
+    });
+  } else {
+    Account.AccountModel.findById(id, (err, userAccount) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).json({ error: 'RAWR! An error occurred!' });
+      }
+
+      //    console.log(typeof(b));
+      if (minerals >= userAccount.minerals) {
+        return res.status(400).json({ error: 'Not enough minerals' });
+      }
+      if (gas >= userAccount.gas) {
+        return res.status(400).json({ error: 'Insufficient Vespene Gas' });
+      }
+      // if (userAccount.unitCount + supply > userAccount.maxUnit) {
+      if (userAccount.unitCount + supply > userAccount.maxUnit) {
+        return res.status(400).json({ error: 'Additional Supply Depots required' });
+      }
+
+      unitPromise = newUnit.save();
+      unitPromise.then(() => {
+        const changeAccount = userAccount;
+        changeAccount.minerals -= minerals;
+        changeAccount.gas -= gas;
+        changeAccount.unitCount += supply;
+        // changeAccount.resources -= 20;
+        changeAccount.save();
+      });
+
+      unitPromise.catch((err2) => {
+        console.log(err2);
+        if (err2.code === 11000) {
+          return res.status(400).json({ error: 'RAWR! Unit already exists!' });
+        }
+
+        return res.status(400).json({ error: 'RAWR! An error occurred!' });
+      });
+
+      return res.json({ redirect: '/maker' });
+    });
+  }
 
   return unitPromise;
 };

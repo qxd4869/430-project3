@@ -10,6 +10,7 @@
     "watchLoginBundle": "babel --watch ./client/login ./client/helper --presets react --out-file ./hosted/loginBundle.js",
     "watchAppBundle": "babel --watch ./client/app ./client/helper --presets react --out-file ./hosted/bundle.js",
     "watchProfileBundle": "babel --watch ./client/profile ./client/helper --presets react --out-file ./hosted/profileBundle.js",
+    "watchBattleBundle": "babel --watch ./client/battle ./client/helper --presets react --out-file ./hosted/battleBundle.js",
     "watch": "babel --watch ./client --out-file ./hosted/bundle.js",
     "nodemon": "nodemon --watch ./server ./server/app.js",
     "start": "node ./server/app.js",
